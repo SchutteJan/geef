@@ -10,7 +10,10 @@ Geef is a minimal Go web application that redirects users to payment request URL
 
 **Core Components:**
 - `main.go`: Entry point handling CLI flags (provider type, currency, provider-specific config) and server initialization
-- `pkg/geef/server.go`: HTTP server that routes requests to `handlePayment`, which parses paths and delegates to providers
+- `pkg/geef/server.go`: HTTP server with two main handlers:
+  - `serveIndex()`: Renders the web form at `/` (with optional pre-filled description)
+  - `handlePayment()`: Parses paths and delegates to providers for payment redirect, or falls back to form if path is description-only
+- `pkg/geef/templates/index.html`: Go template with Web Component-based form for creating payment requests
 - `pkg/geef/provider.go`: Defines the `PaymentRequestProvider` interface (with amount as integer and optional description) and factory function. Provider and currency are specified as runtime arguments to the webserver.
 - `pkg/geef/path.go`: Parses URL paths into `PaymentPathArgs` (amount in cents + optional description)
 - Provider implementations (e.g., `bunq_provider.go`): Implement `getRedirectURL()` to construct payment URLs for specific payment services
@@ -58,9 +61,11 @@ The pre-commit hook runs `go fmt` and `go test ./... -v` on all Go files.
 
 ## URL Path Format
 
-- `/10` → 10.00 EUR
-- `/10.50` or `/10,50` → 10.50 EUR
-- `/10/lunch` → 10.00 EUR with description "lunch"
+- `/` → Web form for creating payment requests
+- `/10` → 10.00 EUR (redirects to payment provider)
+- `/10.50` or `/10,50` → 10.50 EUR (redirects to payment provider)
+- `/10/lunch` → 10.00 EUR with description "lunch" (redirects to payment provider)
+- `/lunch` → Shows form with description "lunch" pre-filled (any path without valid amount format)
 
 ## Adding New Payment Providers
 

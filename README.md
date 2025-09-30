@@ -6,9 +6,12 @@ I.e this URL `https://mydomain.com/10` gets redirected to a payment request of 1
 
 ## Features
 
-- Whole amounts: `/10` -> 10.00 EUR
-- Decimal amounts: `/10.50` -> 10.50 EUR
-- Descriptions: `/10/lunch` -> 10.00 EUR with message "lunch"
+- **Web form**: Navigate to `/` to access a form for creating payment requests
+- **Direct URLs**:
+  - Whole amounts: `/10` -> 10.00 EUR
+  - Decimal amounts: `/10.50` -> 10.50 EUR
+  - Descriptions: `/10/lunch` -> 10.00 EUR with message "lunch"
+  - Description-only: `/lunch` -> shows form with "lunch" pre-filled
 
 ## Usage
 
