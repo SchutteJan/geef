@@ -19,6 +19,7 @@ go run main.go --help
 ## Payment Request Providers
 
 - bunq.me
+- revolut.me
 
 ## Requirements
 

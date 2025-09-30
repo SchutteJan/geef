@@ -18,7 +18,8 @@ type PaymentRequestProvider interface {
 type ProviderType string
 
 const (
-	ProviderBunq ProviderType = "bunq"
+	ProviderBunq    ProviderType = "bunq"
+	ProviderRevolut ProviderType = "revolut"
 )
 
 func NewProvider(providerType ProviderType, config map[string]any) (PaymentRequestProvider, error) {
@@ -29,6 +30,14 @@ func NewProvider(providerType ProviderType, config map[string]any) (PaymentReque
 			return nil, fmt.Errorf("bunq provider requires 'username' configuration")
 		}
 		return &BunqProvider{
+			username: username,
+		}, nil
+	case ProviderRevolut:
+		username, ok := config["username"].(string)
+		if !ok {
+			return nil, fmt.Errorf("revolut provider requires 'username' configuration")
+		}
+		return &RevolutProvider{
 			username: username,
 		}, nil
 	default:
