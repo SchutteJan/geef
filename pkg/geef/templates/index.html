@@ -16,7 +16,9 @@
                 box-sizing: border-box;
             }
             body {
-                font-family: "Comic Sans MS", "Comic Neue", serif;
+                font-family:
+                    "Comic Sans MS", "Chalkboard SE", "Comic Neue", Arial,
+                    sans-serif;
                 background-image: url("https://www.cameronsworld.net/img/content/14/bg.png");
                 background-repeat: repeat;
                 padding: 1rem;
@@ -163,6 +165,7 @@
                             inputmode="decimal"
                             required
                             autocomplete="off"
+                            value="{{ if .Amount }}{{ .Amount }}{{ end }}"
                         />
                         <span class="currency-symbol">€</span>
                     </div>
@@ -195,6 +198,7 @@
                 constructor() {
                     super();
                     this.modelValue = null; // Internal numeric value
+                    this.noAutoRedirect = {{ if .NoAutoRedirect }}true{{ else }}false{{ end }};
                 }
 
                 connectedCallback() {
@@ -354,6 +358,11 @@
                     const description = descriptionInput.value.trim();
                     if (description) {
                         path += "/" + encodeURIComponent(description);
+                    }
+
+                    // Add redirect query parameter if no-auto-redirect is enabled
+                    if (this.noAutoRedirect) {
+                        path += "?redirect=true";
                     }
 
                     // Redirect to payment path

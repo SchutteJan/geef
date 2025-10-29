@@ -13,6 +13,7 @@ func main() {
 	port := flag.String("port", "8080", "Server port")
 	currencyFlag := flag.String("currency", "eur", "Currency code")
 	providerFlag := flag.String("provider", "bunq", "Payment provider")
+	noAutoRedirect := flag.Bool("no-auto-redirect", false, "Prevent automatic redirect to payment provider")
 
 	// Provider-specific flags
 	bunqUsername := flag.String("bunq-username", "", "Bunq.me username (required when provider is 'bunq')")
@@ -53,7 +54,7 @@ func main() {
 		providerConfig["username"] = *revolutUsername
 	}
 
-	server, err := geef.NewServer(currency, provider, providerConfig)
+	server, err := geef.NewServer(currency, provider, providerConfig, *noAutoRedirect)
 	if err != nil {
 		log.Fatal("Failed to create server:", err)
 	}
